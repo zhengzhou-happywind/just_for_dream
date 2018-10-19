@@ -14,3 +14,22 @@ print(obj)
 '''
 [2, 5]
 '''
+
+
+'''
+给一个列表去重，多种方法
+l = ['b','c','d','b','c','a','a']
+
+ll = list(set(l))
+print(ll)
+
+ll = []
+[ll.append(i) for i in l if i not in ll]
+print(ll)
+
+ll = {}.fromkeys(l).keys()
+print(ll)
+
+ll = sorted(set(l), key=l.index)
+print(ll)  # 这样就保持了原列表的排序方式，在sorted里面把原列表的索引作为sorted里面的key的参数
+'''
