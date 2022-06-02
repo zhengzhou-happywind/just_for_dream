@@ -1,0 +1,51 @@
+# -*- encoding:utf8
+"""
+辗转相除法，求两个数的最大公倍数，最小公约数
+"""
+import unittest
+
+
+def gcd_common_multiple_func(divisor, quilt_divisor):
+    """
+    利用辗转相除法，计算得出两个整数的最大公约数
+    :param divisor:除数
+    :param quilt_divisor:被除数
+    :return:
+    """
+    # 先把两个数之间的大小比较出来，大的作为除数，小的作为被除数
+    divisor_ = max(divisor, quilt_divisor)
+    quilt_divisor_ = min(divisor, quilt_divisor)
+    # 把除数和被除数，赋值一份，给下面的变量，用于后续在循环中，辗转赋值，相除
+    div_ = divisor_
+    quilt_ = quilt_divisor_
+    # 设立一个flag，作为while循环的标志位
+    flag = True
+    # 创建一个初始变量，用于接收后续计算得出的最小公约数结果值
+    gcd_result = 0
+    # 开始进入while循环
+    while flag:
+        # 除数跟被除数，相除，得到商，以及余数
+        div, mod = divmod(div_, quilt_)
+        # 只要有余数，就一直循环下去
+        if mod:
+            # 把当前除式的被除数，赋值给除数，余数赋值给被除数，如此辗转赋值，开始进入下一层循环
+            div_ = quilt_
+            quilt_ = mod
+        else:
+            # 如果没有余数，说明，循环已经走完了，修改标志位的值，以跳出循环
+            flag = False
+            # 当前除式的除数，就是最终要求得的最大公约数，赋值给初始设置的变量
+            gcd_result = quilt_
+    # 拿到最大公约数之后，就可以计算的出最小公倍数。用两个数分别除以最大公约数，
+    # 得到的结果彼此相乘再乘以最大公约数，就是最小公倍数的结果
+    common_multiple = (divisor//gcd_result)*(quilt_divisor//gcd_result)*gcd_result
+    return gcd_result, common_multiple
+
+
+class GcdTest(unittest.TestCase):
+    """test gcd_common_multiple"""
+    def test_gcd_common_multiple(self):
+        self.assertEqual(gcd_common_multiple_func(60, 155), (5, 1860))
+
+
+unittest.main()
